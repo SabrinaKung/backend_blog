@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/blogs 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2YWQ0Yzc1MmI0ZTA4NjM0YTViMmIwNSIsImlhdCI6MTcyMjg4ODY0NSwiZXhwIjoxNzIyODg4NzA1fQ.7yWjxUkxNb8XyMtbZduT-5ZurMl9OCrDSuOXNVUXMlY
+
+{
+    "title": "iykyk",
+    "author": "abc",
+    "url": "http",
+    "likes": 4,
+    "userId": "66ad4c752b4e08634a5b2b05"
+}
