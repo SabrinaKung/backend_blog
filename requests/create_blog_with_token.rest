@@ -1,6 +1,6 @@
 POST http://localhost:3003/api/blogs 
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjY2YWQ0Yzc1MmI0ZTA4NjM0YTViMmIwNSIsImlhdCI6MTcyMjg4ODY0NSwiZXhwIjoxNzIyODg4NzA1fQ.7yWjxUkxNb8XyMtbZduT-5ZurMl9OCrDSuOXNVUXMlY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNhYiIsImlkIjoiNjZiMmE3MTg3YzY2YjIwOTMyOWVmYTE5IiwiaWF0IjoxNzIyOTg3MDk1LCJleHAiOjE3MjI5ODcxNTV9.PPeh9HZRXquIYZb4yI5Ktd0m0XRzM0QRF1oS6RNt0d4
 
 {
     "title": "iykyk",

@@ -2,14 +2,7 @@ const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
-
-const getTokenFrom = request => {
-    const authorization = request.get('authorization')
-    if (authorization && authorization.startsWith('Bearer ')) {
-        return authorization.replace('Bearer ', '')
-    }
-    return null
-}
+const userExtractor = require('../utils/middleware').userExtractor
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -21,12 +14,11 @@ blogsRouter.get('/', async (request, response) => {
     //     })
 })
 
-blogsRouter.post('/', async (request, response, next) => {
+blogsRouter.post('/', userExtractor, async (request, response, next) => {
     try {
-
+        const user = request.user
+        
         const body = request.body
-        const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-        const user = await User.findById(decodedToken.id)
 
         if (!body.title || !body.url) {
             return response.status(400).json({ error: 'title or url missing' })
@@ -74,24 +66,23 @@ blogsRouter.get('/:id', async (request, response) => {
     }
 })
 
-blogsRouter.delete('/:id', async (request, response, next) => {
+blogsRouter.delete('/:id', userExtractor, async (request, response, next) => {
     try {
-
-        const token = getTokenFrom(request)
-        const decodedToken = jwt.verify(token, process.env.SECRET)
-        if (!decodedToken.id) {
-            return response.status(401).json({ error: 'token invalid' })
-        }
+        const user = request.user
 
         const blog = await Blog.findById(request.params.id)
         if (!blog) {
             return response.status(404).json({ error: 'blog not found' })
         }
-        if (blog.user.toString() !== decodedToken.id.toString()) {
+        if (blog.user.toString() !== user.id.toString()) {
             return response.status(403).json({ error: 'only the creator can delete this blog' })
         }
 
         await Blog.findByIdAndDelete(request.params.id)
+        /* I'm unsure why with or without the following two lines work */
+        user.blogs = user.blogs.filter(b => b._id.toString() !== blog._id.toString())
+        await user.save()
+
         response.status(204).end()
     } catch (error) {
         next(error)
